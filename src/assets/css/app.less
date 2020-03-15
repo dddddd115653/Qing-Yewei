@@ -1,0 +1,85 @@
+html {
+    background-color: #e6e6e6;
+}
+
+#app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #fff;
+}
+
+@main-red: #ff4d4d;
+@main-border: #cacaca;
+@main-padding: 0 0 0.6rem;
+
+.Home,
+.ShoppingCartNO {
+    padding: @main-padding;
+}
+
+.Home {
+    .various .van-grid {
+
+        .van-grid-item__content--center .van-col,
+        .van-col {
+            color: @main-red;
+            font-weight: bold;
+        }
+    }
+
+    .tabbar .van-col+.van-col {
+        border-color: @main-border;
+    }
+
+    .selfLabel {
+        background: @main-red  !important;
+    }
+}
+
+.ProductCenter {
+
+    .van-card__price,
+    .van-card__price-integer .footer,
+    .van-card__footer .van-icon {
+        color: @main-red;
+        font-weight: bold;
+    }
+
+    .van-tag--danger,
+    .selfLabel {
+        background: @main-red  !important;
+    }
+
+    .van-card__header,
+    .van-cell--percent30 {
+        border-width: 0.01rem;
+        border-style: solid;
+        border-color: @main-border;
+    }
+}
+
+.ShoppingCartNO {
+
+
+    .GoForShop {
+        background: @main-red  !important;
+
+    }
+
+    .van-cell__value--alone {
+        color: @main-red;
+    }
+}
+.ShoppingCart {
+
+    .van-card__price,.head .van-cell .van-cell__value a {
+        color: @main-red;
+    }
+
+}
+.Confirm{
+    .floR i,.van-card__price{
+        color: @main-red;
+    }
+}
