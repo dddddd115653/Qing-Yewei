@@ -21,6 +21,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.vanRow {
+    background: #fff;
+}
 .van-row {
     padding: 0.1rem 0;
 }

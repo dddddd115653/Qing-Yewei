@@ -7,11 +7,16 @@
                     <van-col span="5" offset="13" class="smallFont">查看更多</van-col>
                 </van-row>
                 <van-grid :border="false" :column-num="3">
-                    <van-grid-item v-for="{imageSrc,name,price,selfLabel} in subclass" :key="name">
-                        <van-image v-lazy :src="imageSrc" />
-                        <div class="desc">{{name}}</div>
-                        <van-col>￥{{price}}</van-col>
-                        <div :class="[selfLabel?'selfLabel':'']">{{selfLabel}}</div>
+                    <van-grid-item
+                        v-for="{imageSrc,name,price,selfLabel,link} in subclass"
+                        :key="name"
+                    >
+                        <router-link :to="link">
+                            <van-image v-lazy :src="imageSrc" />
+                            <div class="desc">{{name}}</div>
+                            <van-col>￥{{price}}</van-col>
+                            <div :class="[selfLabel?'selfLabel':'']">{{selfLabel}}</div>
+                        </router-link>
                     </van-grid-item>
                 </van-grid>
             </lazy-component>
@@ -32,11 +37,13 @@ export default {
                             name:
                                 "久宝龙 金奖肉挂/私房茶 福建武夷山高山岩茶,小罐茶,送礼经",
                             price: "498.00",
+                            link: "/CommodityDetails",
                             selfLabel: "标签"
                         },
                         {
                             imageSrc: `https://via.placeholder.com/300/${this.randomColor()}`,
                             name: "久宝龙 典",
+                            link: "/CommodityDetails",
                             price: "498.00"
                         }
                     ]
@@ -49,32 +56,37 @@ export default {
                             name:
                                 "久宝龙 金奖肉挂/私房茶 福建武夷山高山岩茶,小罐茶,送礼",
                             price: "498.00",
+                            link: "/CommodityDetails",
                             selfLabel: "标签"
                         },
                         {
                             imageSrc: `https://via.placeholder.com/300/${this.randomColor()}`,
                             name:
                                 "久宝龙 金奖肉挂/私房茶 福建武夷山高山岩茶,小罐茶,送",
-                            price: "498.00"
+                            price: "498.00",
+                            link: "/CommodityDetails"
                         },
                         {
                             imageSrc: `https://via.placeholder.com/300/${this.randomColor()}`,
                             name:
                                 "久宝龙 金奖肉挂/私房茶 福建武夷山高山岩茶,小罐茶,",
                             price: "498.00",
+                            link: "/CommodityDetails",
                             selfLabel: "标签"
                         },
                         {
                             imageSrc: `https://via.placeholder.com/300/${this.randomColor()}`,
                             name:
                                 "久宝龙 金奖肉挂/私房茶 福建武夷山高山岩茶,小罐茶",
-                            price: "498.00"
+                            price: "498.00",
+                            link: "/CommodityDetails"
                         },
                         {
                             imageSrc: `https://via.placeholder.com/300/${this.randomColor()}`,
                             name:
                                 "久宝龙 金奖肉挂/私房茶 福建武夷山高山岩茶,小罐",
-                            price: "498.00"
+                            price: "498.00",
+                            link: "/CommodityDetails"
                         }
                     ]
                 },
@@ -85,28 +97,33 @@ export default {
                             imageSrc: `https://via.placeholder.com/300/${this.randomColor()}`,
                             name:
                                 "久宝龙 金奖肉挂/私房茶 福建武夷山高山岩茶,小",
-                            price: "498.00"
+                            price: "498.00",
+                            link: "/CommodityDetails"
                         },
                         {
                             imageSrc: `https://via.placeholder.com/300/${this.randomColor()}`,
                             name: "久宝龙 金奖肉挂/私房茶 福建武夷山高山岩茶,",
                             price: "498.00",
+                            link: "/CommodityDetails",
                             selfLabel: "标签"
                         },
                         {
                             imageSrc: `https://via.placeholder.com/300/${this.randomColor()}`,
                             name: "久宝龙 金奖肉挂/私房茶 福建武夷山高山岩茶",
+                            link: "/CommodityDetails",
                             price: "498.00"
                         },
                         {
                             imageSrc: `https://via.placeholder.com/300/${this.randomColor()}`,
                             name: "久宝龙 金奖肉挂/私房茶 福建武夷山高山岩",
+                            link: "/CommodityDetails",
                             price: "498.00"
                         },
                         {
                             imageSrc: `https://via.placeholder.com/300/${this.randomColor()}`,
                             name:
                                 "久宝龙 金奖肉挂/私房茶 福建武夷山高山岩茶,小罐茶,送礼经典",
+                            link: "/CommodityDetails",
                             price: "498.00"
                         }
                     ]
@@ -118,6 +135,9 @@ export default {
 };
 </script>
 <style lang='less' scoped>
+.various {
+    background: #fff;
+}
 .van-card__tag {
     top: 0.17rem;
     left: 8px;

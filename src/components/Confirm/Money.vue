@@ -34,17 +34,18 @@
         </div>
         <!-- 支付方式单元格 -->
         <div class="main">
-            <div class="PaymentMethod" @click="show = true">
+            <!-- @click="show = true" 其他支付方式-->
+            <div class="PaymentMethod">
                 <span class="Payment">支付方式</span>
                 <span class="Method">在线支付</span>
             </div>
-            <van-action-sheet v-model="show" title="请选择支付方式">
+            <!-- <van-action-sheet v-model="show" title="请选择支付方式">
                 <div class="content">
                     <van-radio-group v-model="radio" checked-color="#07c160">
                         <van-radio name="1" @click="show = false">在线支付</van-radio>
                     </van-radio-group>
                 </div>
-            </van-action-sheet>
+            </van-action-sheet>-->
         </div>
         <div class="main ActualPayment">
             <div class="PaymentMethod">
@@ -64,7 +65,18 @@
                 <span class="Method">￥{{ActualPayment/100}}</span>
             </div>
         </div>
-        <van-submit-bar :price="ActualPayment" button-text="提交订单" @submit="onSubmit" />
+        <van-submit-bar
+            v-if="this.state==undefined"
+            :price="ActualPayment"
+            button-text="提交订单"
+            @submit="onSubmit"
+        />
+        <div v-if="this.state!=2" class="modifyState">
+            <button v-if="this.state==0">删除订单</button>
+
+            <button v-if="this.state==1">取消订单</button>
+            <button v-if="this.state==1">去支付</button>
+        </div>
     </div>
 </template>
 <script>
@@ -94,15 +106,16 @@ const coupon1 = {
 };
 export default {
     name: "Money",
+    props: ["state"],
     data() {
         return {
             num: "324",
+            // show: false, //支付方式
+            // radio: "1", //支付方式
             showList: false, //选择优惠券 是否展示
             chosenCoupon: -1, //当前选中的优惠券 (按下标选,-1为不使用优惠券)
             coupons: [coupon, coupon1], //可用优惠券
             disabledCoupons: [coupon], //不可用优惠券
-            show: false, //支付方式
-            radio: "1", //支付方式
             Amount: 854681, //商品金额
             Preferential: 0, //优惠抵扣
             freight: 0, //运费
@@ -131,7 +144,27 @@ export default {
 </script>
 <style lang='less' scoped>
 .Money {
-    padding: 0 0 0.5rem;
+    background: #fff;
+    .modifyState {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 94%;
+        font-size: 0.1rem;
+        line-height: 0.2rem;
+        padding: 0.1rem 3%;
+        border-top: 0.01rem solid #ccc;
+        background: #fff;
+        text-align: right;
+        button {
+            padding: 0 0.1rem;
+            border: 0.01rem #353535 solid;
+            color: #353535;
+            background: #fff;
+            min-width: 25%;
+            margin-left: 0.1rem;
+        }
+    }
 }
 .main {
     width: 84%;
@@ -147,6 +180,9 @@ export default {
         }
         i {
             font-style: normal;
+
+            font-family: Avenir-Heavy, PingFang SC, Helvetica Neue, Arial,
+                sans-serif;
         }
     }
     .Payment {

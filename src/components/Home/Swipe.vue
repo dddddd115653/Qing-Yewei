@@ -1,14 +1,18 @@
 <template>
     <div class="swipe">
-        <van-swipe @change="onChange" :autoplay="3000">
+        <van-swipe @change="onChange" :autoplay="autoPlay">
             <van-swipe-item v-for="(image, index) in swipeImages" :key="index">
-                <img v-lazy="image" width="100%" />
+                <img v-lazy="image" width="100%" @click="preview(index)" />
             </van-swipe-item>
             <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{swipeImages.length}}</div>
         </van-swipe>
+
+        <!-- 图片预览 -->
+        <van-image-preview v-if="previewList" v-model="show"></van-image-preview>
     </div>
 </template>
 <script>
+import { ImagePreview } from "vant";
 export default {
     name: "Swipe",
     data() {
@@ -18,12 +22,32 @@ export default {
             swipeImages: [
                 "https://img.yzcdn.cn/vant/apple-1.jpg",
                 "https://img.yzcdn.cn/vant/apple-2.jpg",
-                `https://via.placeholder.com/300/${this.randomColor()}`,
-                `https://via.placeholder.com/300/${this.randomColor()}`
-            ]
+                "https://img.yzcdn.cn/2.jpg",
+                "https://img.yzcdn.cn/vant/apple-1.jpg",
+                "https://img.yzcdn.cn/vant/apple-2.jpg",
+                "https://img.yzcdn.cn/2.jpg"
+            ],
+            autoPlay: 3000, //自动循环时间
+            previewList: true, //在商品页面加载图片预览(否则不加载)
+            show: false //预览是否显示
         };
     },
     methods: {
+        preview(index) {
+            console.log(this);
+            this.autoPlay = 60 * 60 * 1000;
+            ImagePreview({
+                images: this.swipeImages,
+                loop: false, //是否循环
+                startPosition: index, //指定图片预览起始位置索引
+                closeOnPopstate: true, //页面回退时关闭预览
+                onClose() {
+                    console.log(this.autoPlay);
+                    this.autoPlay = 30;
+                    console.log(this.autoPlay);
+                }
+            });
+        },
         onChange(index) {
             this.current = index;
         }

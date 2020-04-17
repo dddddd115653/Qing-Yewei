@@ -39,7 +39,20 @@ import {
     ContactEdit,
     CouponCell,
     CouponList,
-    ActionSheet, RadioGroup, Radio
+    ActionSheet,
+    RadioGroup,
+    Radio,
+    GoodsAction,
+    GoodsActionIcon,
+    GoodsActionButton,
+    Sku,
+    ImagePreview,
+    AddressList,
+    Dialog,
+    AddressEdit,
+    Area,
+    Step,
+    Steps,
     // Vant
 } from 'vant';
 
@@ -80,6 +93,17 @@ Vue.use(Tabbar)
     .use(ActionSheet)
     .use(RadioGroup)
     .use(Radio)
+    .use(GoodsAction)
+    .use(GoodsActionIcon)
+    .use(GoodsActionButton)
+    .use(Sku)
+    .use(ImagePreview)
+    .use(AddressList)
+    .use(Dialog)
+    .use(AddressEdit)
+    .use(Area)
+    .use(Step)
+    .use(Steps)
 // .use(Vant)
 
 new Vue({

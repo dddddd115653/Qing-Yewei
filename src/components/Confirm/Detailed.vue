@@ -1,6 +1,6 @@
 <template>
     <div class="Detailed">
-        <van-cell title="购物清单" icon="coupon-o" />
+        <van-cell title="购物清单" icon="description" />
         <div class="list">
             <div
                 class="caList"
@@ -64,14 +64,17 @@ export default {
 </script>
 <style lang='less' scoped>
 .Detailed {
+    background: #fff;
     .van-cell {
         padding: 0 8%;
         line-height: 0.3rem;
         border-bottom: 0.001rem solid #6d6d6d;
         i {
-            margin: 0 0.1rem 0 -0.08rem;
+            // margin: 0 0.1rem 0 -0.08rem;
+            margin: 0 0.09rem 0 -0.15rem;
             font-size: 0.1rem;
             line-height: 0.3rem;
+            float: left;
         }
         span {
             font-size: 0.1rem;
@@ -105,8 +108,13 @@ export default {
             }
             .van-card__price {
                 font-size: 0.09rem;
+                float: right;
+                font-family: Avenir-Heavy, PingFang SC, Helvetica Neue, Arial,
+                    sans-serif;
+
                 .van-card__price-integer {
                     font-size: 0.11rem;
+                    // font-style: normal;
                 }
             }
             .van-card__num {

@@ -1,8 +1,16 @@
 <template>
     <div class="ShoppingCartNO">
-        <Tabbar></Tabbar>
         <div class="nav">
-            <van-image width="1rem" height="1rem" src="https://img.yzcdn.cn/vant/cat.jpeg" />
+            <div v-if="this.$route.params.id == 'Distribution'" class="Distribution">
+                <!-- 分销中心 -->
+                <van-image width="1rem" height="1rem" src="https://img.yzcdn.cn/vant/cat.jpeg" />
+                <p>您暂不符合知味达人申请资格</p>
+            </div>
+            <div v-else>
+                <!-- 购物车空的时候 -->
+                <van-image width="1rem" height="1rem" src="https://img.yzcdn.cn/vant/cat.jpeg" />
+            </div>
+
             <router-link to="Home" class="GoForShop">去逛逛</router-link>
         </div>
         <van-divider>为您推荐</van-divider>
@@ -47,6 +55,13 @@ export default {
 <style lang='less' scoped>
 .ShoppingCartNO {
     background: #fff;
+    .Distribution {
+        text-align: center;
+        p {
+            margin: 0 0 0.1rem;
+            font-size: 0.1rem;
+        }
+    }
     .nav {
         .van-image {
             display: block;
@@ -66,9 +81,11 @@ export default {
     .van-multi-ellipsis--l2 {
         font-size: 0.1rem;
         line-height: 0.11rem;
-        height: 0.21rem;
+        height: 0.2rem;
     }
-
+    .van-cell {
+        padding: 0;
+    }
     .van-cell__value--alone {
         font-weight: bold;
     }

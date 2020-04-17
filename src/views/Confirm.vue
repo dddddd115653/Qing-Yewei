@@ -7,10 +7,10 @@
     </div>
 </template>
 <script>
-import Address from "@/components/Confirm/Address";
-import Detailed from "@/components/Confirm/Detailed";
-import LeavingMessage from "@/components/Confirm/LeavingMessage";
-import Money from "@/components/Confirm/Money";
+import Address from "@/components/Confirm/Address"; //收件地址
+import Detailed from "@/components/Confirm/Detailed"; //购物清单
+import LeavingMessage from "@/components/Confirm/LeavingMessage"; //商品留言
+import Money from "@/components/Confirm/Money"; //支付信息
 export default {
     name: "Confirm",
     components: {
@@ -21,5 +21,3 @@ export default {
     }
 };
 </script>
-<style lang='less' scoped>
-</style>

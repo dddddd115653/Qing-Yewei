@@ -1,5 +1,6 @@
 <template>
     <div class="ProductCenter">
+        <!-- 产品中心 -->
         <!-- 搜索 -->
         <Search></Search>
         <TabbarPopupCard></TabbarPopupCard>

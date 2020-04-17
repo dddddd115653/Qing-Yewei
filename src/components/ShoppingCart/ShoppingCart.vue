@@ -2,22 +2,20 @@
     <div class="ShoppingCart">
         <div class="head">
             <van-checkbox
-                @click="checkAll"
-                v-model="checked"
+                @click.stop="checkAllStore"
+                v-model="getChecked"
                 label-disabled
                 icon-size="0.1rem"
                 checked-color="#07c160"
             ></van-checkbox>
             <van-cell title="乡野知味—中国特产优选平台" size="large">
                 <router-link to="/">优惠券</router-link>
-                <!-- <span></span> -->
             </van-cell>
         </div>
-        <div class="carList">
-            <van-checkbox-group v-model="result" ref="checkboxGroup">
-                <div
-                    class="cardList"
-                    v-for="{
+        <van-checkbox-group v-model="getResult" ref="checkboxGroup">
+            <div
+                class="cardList"
+                v-for="{
                             id,
                             src,
                             title,
@@ -25,171 +23,117 @@
                             describe,
                             num,
                         } in commodities"
-                    :key="id"
-                >
-                    <van-swipe-cell>
-                        <van-checkbox
-                            bind-group
-                            @click="cardListCheckedFn(id)"
-                            :name="id"
-                            label-disabled
-                            icon-size="0.1rem"
-                            checked-color="#07c160"
-                        >
-                            <van-card
-                                :price="price"
-                                :desc="describe"
-                                :title="title"
-                                :thumb="src"
-                                class="goods-card"
-                            />
-                            <div class="quantity">
-                                <div class="addQuantity" @click="addQuantity(id)">＋</div>
-                                <van-field
-                                    v-model="num"
-                                    type="digit"
-                                    input-align="center"
-                                    maxlength="3"
-                                />
-                                <div class="reduceQuantity" @click="reduceQuantity(id)">－</div>
-                            </div>
-                        </van-checkbox>
-                        <van-button
-                            @click="DeleteMerchandise(id)"
-                            slot="right"
-                            square
-                            text="删除"
-                            type="danger"
-                            class="delete-button"
-                        />
-                    </van-swipe-cell>
-                </div>
-            </van-checkbox-group>
-        </div>
+                :key="id"
+            >
+                <van-swipe-cell>
+                    <van-checkbox
+                        bind-group
+                        @click.stop="cardListCheckedFn(id)"
+                        :name="id"
+                        label-disabled
+                        icon-size="0.1rem"
+                        checked-color="#07c160"
+                    ></van-checkbox>
+
+                    <van-card
+                        :price="price"
+                        :desc="describe"
+                        :title="title"
+                        :thumb="src"
+                        class="goods-card"
+                    />
+                    <div class="quantity">
+                        <div class="addQuantity" @click.stop="addQuantity(id)">＋</div>
+                        <van-field v-model="num" type="digit" input-align="center" maxlength="3" />
+                        <div class="reduceQuantity" @click.stop="reduceQuantity(id)">－</div>
+                    </div>
+                    <van-button
+                        @click.stop="DeleteMerchandise(id)"
+                        slot="right"
+                        square
+                        text="删除"
+                        type="danger"
+                        class="delete-button"
+                    />
+                </van-swipe-cell>
+            </div>
+        </van-checkbox-group>
 
         <van-submit-bar :price="total" button-text="提交订单" @submit="onSubmit" :loading="loading">
-            <van-checkbox v-model="checked" checked-color="#07c160" @click="checkAll">全选</van-checkbox>
+            <van-checkbox v-model="getChecked" checked-color="#07c160" @click="checkAllStore">全选</van-checkbox>
         </van-submit-bar>
     </div>
 </template>
-
 <script>
+import { mapState, mapMutations } from "vuex";
 export default {
     name: "ShoppingCart",
     data() {
         return {
-            total: 0, //总额 (单位:分)
-            result: [], //当前选中的商品
-            checked: false,
-            loading: false, //提交订单后 加载
-            commodities: [
-                {
-                    id: "123",
-                    src: "https://img.yzcdn.cn/vant/cat.jpeg",
-                    title: "这是",
-                    price: "10.15",
-                    describe: "10斤装",
-                    num: 12,
-                    checkedState: true
-                },
-                {
-                    id: "546",
-                    src: "https://img.yzcdn.cn/vant/cat.jpeg",
-                    title:
-                        "这是一段最多显示两行的文字，多余的内容会被省略一段最多显示两行的文字，多余的内容会被省略是一段最多显示两行的文字，多余的内容会被省略一段最多显示两行的文字，多余的内容会被省略是一段最多显示两行的文字，多余的内容会被省略一段最多显示两行的文字，多余的内容会被省略",
-                    price: "5631.15",
-                    describe: "10斤装",
-                    num: 1,
-                    checkedState: false
-                },
-                {
-                    id: "13",
-                    src: "https://img.yzcdn.cn/vant/cat.jpeg",
-                    title: "这是",
-                    price: "10.04",
-                    describe: "10斤装",
-                    num: 10,
-                    checkedState: false
-                }
-            ]
+            loading: false //提交订单后 加载
+            //这样引用 不能实现双向绑定
+            // result: this.$store.state.shoppingCart.result
+            // checked: this.$store.state.shoppingCart.checked
         };
     },
-    created() {
-        this.commodities.forEach(a => {
-            if (a.checkedState == true) {
-                this.result.push(a.id);
+    computed: {
+        getChecked: {
+            //因 v-model 所以要这样引用  实现双向绑定
+            get() {
+                return (this.checked = this.$store.state.shoppingCart.checked);
+            },
+            set(val) {
+                if (val) {
+                    this.checked = val;
+                } else {
+                    this.checked;
+                }
             }
-        });
-        this.totalFn();
+        },
+        getResult: {
+            get() {
+                return (this.result = this.$store.state.shoppingCart.result);
+            },
+            set(val) {
+                if (val) {
+                    this.result = val;
+                } else {
+                    this.result;
+                }
+            }
+        },
+        ...mapState("shoppingCart", ["commodities", "total"])
+    },
+
+    created() {
+        //进入页面 对选择及金额进行计算
+        this.$store.commit("shoppingCart/setResult");
     },
     methods: {
+        ...mapMutations("shoppingCart", [
+            "addQuantity",
+            "reduceQuantity",
+            "totalFn",
+            "checkAllStore",
+            "cardListCheckedFn"
+        ]),
         onSubmit() {
+            //点击提交
             this.loading = true;
             setTimeout(() => {
                 this.$router.push({ name: "Confirm" });
             }, 2000);
-        },
-        checkAll() {
-            this.$refs.checkboxGroup.toggleAll(!this.cardListChecked);
-            this.commodities.forEach(
-                a => (a.checkedState = this.cardListChecked)
-            );
-            this.cardListChecked = !this.cardListChecked;
-            this.totalFn();
-        },
-
-        cardListCheckedFn(id) {
-            setTimeout(() => {
-                this.totalFn();
-                if (this.result.find(item => item == id)) {
-                    if (this.commodities.length == this.result.length) {
-                        this.checked = true;
-                        this.cardListChecked = true;
-                        return;
-                    }
-                } else {
-                    this.checked = false;
-                    this.cardListChecked = false;
-                }
-            }, 3);
-        },
-        totalFn() {
-            this.total = 0;
-            this.result.forEach(item => {
-                let check = this.commodities.find(id => id.id == item);
-
-                if (check != undefined) {
-                    this.total += Number(check.price) * 100 * check.num;
-                }
-            });
-        },
-        addQuantity(id) {
-            let idd = this.commodities.find(a => a.id == id);
-            idd.num++;
-        },
-        reduceQuantity(id) {
-            let idd = this.commodities.find(a => a.id == id);
-            if (idd.num > 1) {
-                idd.num--;
-            }
-        },
-        DeleteMerchandise(Value) {
-            let _index;
-            let idd = this.commodities.find((item, index, arr) => {
-                _index = index;
-                return item.id == Value;
-            });
-            this.commodities.splice(_index, 1);
-            this.totalFn();
-            //把 idd 发给后台删除
         }
     }
 };
 </script>
 <style lang='less'>
 .ShoppingCart {
+    padding: 0 0 0.4rem;
     .head {
+        background: #fff;
         display: flex;
+        border-bottom: 0.005rem solid #ccc;
 
         .van-cell {
             width: 85%;
@@ -198,6 +142,7 @@ export default {
             .van-cell__title {
                 font-size: 0.08rem;
                 line-height: 0.28rem;
+                display: contents;
             }
             .van-cell__value {
                 font-size: 0.08rem;
@@ -212,7 +157,6 @@ export default {
             width: 100%;
             height: 100%;
             display: flex;
-            // padding: 0.11rem 0 0;
             i {
                 margin: 0.11rem auto 0;
             }
@@ -221,38 +165,42 @@ export default {
             width: 10%;
         }
     }
-    .van-checkbox__icon {
-        width: 10%;
-        i {
-            margin: 0 auto;
+    .van-checkbox-group {
+        background: #fff;
+        .cardList {
+            padding: 0.1rem 0;
         }
-    }
-    .carList {
-        border-top: 0.005rem solid #ccc;
         .cardList + .cardList {
-            .van-checkbox__label {
-                border-top: 0.01rem solid #ccc;
+            border-top: 0.01rem #ccc solid;
+        }
+        .van-checkbox {
+            width: 10%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            .van-checkbox__icon {
+                width: 100%;
+                i {
+                    margin: 0 auto;
+                }
             }
         }
-        .van-button {
-            height: 100%;
-        }
-    }
-    .van-checkbox__label {
-        width: 90%;
-        margin: 0;
-        position: relative;
+
         .van-card {
+            margin: 0 0 0 10%;
+            width: 90%;
             background: #fff;
             font-size: 0.09rem;
             line-height: 0.1rem;
+            padding: 0;
             .van-card__thumb {
                 width: 30%;
             }
             .van-card__title,
             .van-card__desc {
-                max-height: 0.2rem;
-                line-height: 0.1rem;
+                max-height: 0.27rem;
+                height: 0.27rem;
             }
             .van-card__price {
                 font-size: 0.07rem;
@@ -262,6 +210,9 @@ export default {
                     line-height: 0.1rem;
                 }
             }
+        }
+        .van-swipe-cell__wrapper {
+            position: relative;
         }
         .quantity {
             position: absolute;
@@ -300,6 +251,9 @@ export default {
                 height: 0.2rem;
                 border: 0.01rem solid #ccc;
             }
+        }
+        .van-button {
+            height: 100%;
         }
     }
     .van-submit-bar .van-checkbox__label {

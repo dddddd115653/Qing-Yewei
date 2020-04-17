@@ -1,10 +1,11 @@
 <template>
     <div class="Home">
         <Header></Header>
-        <Swipe :randomColor="randomColor"></Swipe>
+        <Swipe :randomColor="randomColor" :id="commodityId"></Swipe>
         <Classify></Classify>
         <Classification :randomColor="randomColor"></Classification>
         <MySearch></MySearch>
+        <!-- 新品尝鲜/热销推荐/各地美食  循环 -->
         <Various :randomColor="randomColor"></Various>
         <Support></Support>
         <Tabbar></Tabbar>
@@ -31,6 +32,11 @@ export default {
         Various,
         Support,
         Tabbar
+    },
+    data() {
+        return {
+            commodityId: this.$route.params.id
+        };
     },
     methods: {
         randomColor() {
